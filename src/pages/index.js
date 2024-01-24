@@ -1,96 +1,7 @@
-// // pages/index.js
-
-// import Head from 'next/head';
-
-// function Home({ apiData }) {
-//   return (
-//     <>
-//     {apiData.map((e) => (
-//       <h2 key={e.id}>{e.name}</h2>
-//     ))}
-//   </>
-//   );
-// }
-
-// export async function getServerSideProps() {
-//   try {
-//     const response = await fetch('https://65afd06b2f26c3f2139bcf35.mockapi.io/api/users');
-//     const apiData = await response.json();
-
-//     return {
-//       props: {
-//         apiData,
-//       },
-//     };
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//     return {
-//       props: {
-//         apiData: null,
-//       },
-//     };
-//   }
-// }
-
-// export default Home;
-
-
-// pages/index.js
-
-// import Head from 'next/head';
-// import { useState } from 'react'; // Import useState from React
-
-// function Home({ apiData }) {
-//   const [showLabels, setShowLabels] = useState(false); // State to manage label visibility
-
-//   return (
-//     <>
-//       <Head>
-//         <title>Label Example</title>
-//       </Head>
-//       <button onClick={() => setShowLabels(!showLabels)}>get data</button>
-//       {showLabels && (
-//         // Display labels only when showLabels is true
-//         <div>
-//          {apiData.map((e) => (
-//       <h2 key={e.id}>{e.name}</h2>
-//     ))}
-//         </div>
-//       )}
-//     </>
-//   );
-// }
-
-// export async function getServerSideProps() {
-//   try {
-//     const response = await fetch('https://65afd06b2f26c3f2139bcf35.mockapi.io/api/users');
-//     const apiData = await response.json();
-
-//     return {
-//       props: {
-//         apiData,
-//       },
-//     };
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//     return {
-//       props: {
-//         apiData: null,
-//       },
-//     };
-//   }
-// }
-
-// export default Home;
-
-
-
-// pages/index.js
-
 import Head from 'next/head';
 import { useState } from 'react';
 
-function Home({ apiData }) {
+function Home({ apiData, nameofCreator }) {
   const [showServerData, setShowServerData] = useState(false); // State for server-side data
   const [clientData, setClientData] = useState(null); // State for client-side data
   const [showClientDataButton, setShowClientDataButton] = useState(true); // State for showing/hiding the button
@@ -98,10 +9,17 @@ function Home({ apiData }) {
   // Function to fetch data client-side
   const fetchClientData = async () => {
     try {
+      // Add a log message before making the API request
+      console.log('Fetching client-side data...');
+
       const response = await fetch('https://65afd06b2f26c3f2139bcf35.mockapi.io/api/users');
       const data = await response.json();
       setClientData(data);
+
+      // Add a log message after fetching data
+      console.log('Client-side data fetched successfully:', data);
     } catch (error) {
+      // Add an error log message in case of an error
       console.error('Error fetching client-side data:', error);
     }
   };
@@ -130,37 +48,51 @@ function Home({ apiData }) {
       {showServerData && (
         <div>
           {apiData.map((e) => (
-            <h2 key={e.id}>{e.name}</h2>
+            <h2 key={e.id} style={{ color: 'blue' }}>{e.name}</h2>
           ))}
         </div>
       )}
 
       {clientData && showClientDataButton && (
         <div>
-          {apiData.map((e) => (
-            <h2 key={e.id} style={{ color: 'blue' }}>{e.name}</h2>
+          {clientData.map((e) => (
+            <h2 key={e.id}>{e.name}</h2>
           ))}
         </div>
       )}
+
+      <h3>createdBy:</h3>
+      <p>{nameofCreator || 'Loading...'}</p>
     </>
   );
 }
 
 export async function getServerSideProps() {
   try {
+    // Add a log message when the page is loaded
+    console.log('Page loaded with server-side rendering...');
+
     const response = await fetch('https://65afd06b2f26c3f2139bcf35.mockapi.io/api/users');
     const apiData = await response.json();
+
+    // Add a log message after fetching server-side data
+    console.log('Server-side data fetched successfully:', apiData);
+
+    const nameofCreator = process.env.NAME || 'Default Value';
 
     return {
       props: {
         apiData,
+        nameofCreator,
       },
     };
   } catch (error) {
+    // Add an error log message in case of an error
     console.error('Error fetching server-side data:', error);
     return {
       props: {
         apiData: null,
+        nameofCreator: 'Default Value',
       },
     };
   }

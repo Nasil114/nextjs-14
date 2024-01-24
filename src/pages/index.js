@@ -4,24 +4,11 @@ import Head from 'next/head';
 
 function Home({ apiData }) {
   return (
-    <div>
-      <Head>
-        <title>Mock API Example</title>
-        <meta name="description" content="Mock API Example in Next.js" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main>
-        <h1>Mock API Example</h1>
-        <button disabled>{'Fetch Data (SSR)'}</button>
-        {apiData && (
-          <div>
-            <h2>API Data:</h2>
-            <pre>{JSON.stringify(apiData, null, 2)}</pre>
-          </div>
-        )}
-      </main>
-    </div>
+    <>
+    {apiData.map((e) => (
+      <h2 key={e.id}>{e.name}</h2>
+    ))}
+  </>
   );
 }
 

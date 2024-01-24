@@ -137,8 +137,8 @@ function Home({ apiData }) {
 
       {clientData && showClientDataButton && (
         <div>
-          {clientData.map((e) => (
-            <h2 key={e.id}>{e.name}</h2>
+          {apiData.map((e) => (
+            <h2 key={e.id} style={{ color: 'blue' }}>{e.name}</h2>
           ))}
         </div>
       )}

@@ -77,6 +77,7 @@ export async function getServerSideProps() {
 
     // Add a log message after fetching server-side data
     console.log('Server-side data fetched successfully:', apiData);
+    console.log('Value of process.env.NAME:', process.env.NAME);
 
     const nameofCreator = process.env.NAME || 'Default Value';
 
